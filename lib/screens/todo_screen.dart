@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vazifa38/screens/settings_screen.dart';
 
@@ -70,7 +69,7 @@ class _TodoScreenState extends State<TodoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('To-Do'),
+        title: const Text('ToDo'),
         actions: [
           IconButton(
               onPressed: () {
@@ -78,7 +77,7 @@ class _TodoScreenState extends State<TodoScreen> {
                   builder: (context) => const SettingsPage(),
                 ));
               },
-              icon: const Icon(CupertinoIcons.settings))
+              icon: const Icon(Icons.settings))
         ],
       ),
       body: ListView.builder(
