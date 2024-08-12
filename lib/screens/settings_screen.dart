@@ -62,7 +62,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Future<void> _authenticateBiometric() async {
     try {
-      // Check if device supports biometrics
       bool canCheckBiometrics = await auth.canCheckBiometrics;
       bool isDeviceSupported = await auth.isDeviceSupported();
       List<BiometricType> availableBiometrics =
@@ -71,12 +70,10 @@ class _SettingsPageState extends State<SettingsPage> {
       if (!canCheckBiometrics ||
           !isDeviceSupported ||
           availableBiometrics.isEmpty) {
-        _showSnackBar(
-            'Biometric authentication is not available on this device.');
+        _showSnackBar('Biometric authentication is not available on this device.');
         return;
       }
 
-      // Determine the biometric type to use
       String biometricType = 'Biometric';
       if (availableBiometrics.contains(BiometricType.fingerprint)) {
         biometricType = 'Fingerprint';
@@ -125,6 +122,14 @@ class _SettingsPageState extends State<SettingsPage> {
           obscureText: true,
           obscuringCharacter: '*',
           autofocus: true,
+          defaultPinTheme: PinTheme(
+            width: 40,
+            height: 50,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.blueAccent),
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
         ),
         actions: [
           TextButton(
@@ -134,7 +139,7 @@ class _SettingsPageState extends State<SettingsPage> {
             },
             child: const Text('Cancel'),
           ),
-          TextButton(
+          ElevatedButton(
             onPressed: () async {
               if (_pinController.text.length == 4) {
                 await _savePin(_pinController.text);
@@ -164,7 +169,7 @@ class _SettingsPageState extends State<SettingsPage> {
             },
             child: const Text('Cancel'),
           ),
-          TextButton(
+          ElevatedButton(
             onPressed: () async {
               await _removePin();
               Navigator.of(context).pop();
@@ -182,8 +187,7 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Disable Biometric Authentication'),
-        content: const Text(
-            'Are you sure you want to disable biometric authentication?'),
+        content: const Text('Are you sure you want to disable biometric authentication?'),
         actions: [
           TextButton(
             onPressed: () {
@@ -191,7 +195,7 @@ class _SettingsPageState extends State<SettingsPage> {
             },
             child: const Text('Cancel'),
           ),
-          TextButton(
+          ElevatedButton(
             onPressed: () async {
               await _setBiometricEnabled(false);
               Navigator.of(context).pop();
@@ -209,32 +213,43 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Security Settings'),
+        backgroundColor: Colors.blueAccent,
       ),
       body: ListView(
+        padding: const EdgeInsets.all(16.0),
         children: [
-          SwitchListTile(
-            title: const Text('Enable PIN'),
-            value: _isPinEnabled,
-            onChanged: (value) {
-              if (value) {
-                _promptPinSetup();
-              } else {
-                _confirmPinRemoval();
-              }
-            },
-            secondary: const Icon(Icons.lock),
+          Card(
+            margin: const EdgeInsets.only(bottom: 16.0),
+            child: ListTile(
+              title: const Text('Enable PIN Code'),
+              trailing: Switch(
+                value: _isPinEnabled,
+                onChanged: (value) {
+                  if (value) {
+                    _promptPinSetup();
+                  } else {
+                    _confirmPinRemoval();
+                  }
+                },
+              ),
+              leading: const Icon(Icons.lock),
+            ),
           ),
-          SwitchListTile(
-            title: const Text('Enable Biometric Authentication'),
-            value: _isBiometricEnabled,
-            onChanged: (value) {
-              if (value) {
-                _authenticateBiometric();
-              } else {
-                _confirmBiometricDisable();
-              }
-            },
-            secondary: const Icon(Icons.fingerprint),
+          Card(
+            child: ListTile(
+              title: const Text('Enable Biometric Authentication'),
+              trailing: Switch(
+                value: _isBiometricEnabled,
+                onChanged: (value) {
+                  if (value) {
+                    _authenticateBiometric();
+                  } else {
+                    _confirmBiometricDisable();
+                  }
+                },
+              ),
+              leading: const Icon(Icons.fingerprint),
+            ),
           ),
         ],
       ),

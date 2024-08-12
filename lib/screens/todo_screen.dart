@@ -39,7 +39,7 @@ class _TodoScreenState extends State<TodoScreen> {
               Navigator.pop(context);
             },
             decoration: const InputDecoration(
-              hintText: 'Enter something to do...',
+              hintText: 'Enter something todo...',
             ),
           ),
           actions: <Widget>[

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,7 +14,7 @@ class PinEntryPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Enter PIN'),
+        title: const Text('Enter PIN Code'),
       ),
       body: Center(
         child: Padding(
@@ -33,7 +32,7 @@ class PinEntryPage extends StatelessWidget {
                 );
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Incorrect PIN')),
+                  const SnackBar(content: Text('Incorrect PIN Code')),
                 );
               }
             },
